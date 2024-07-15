@@ -114,17 +114,31 @@ def fetch_with_retry(index, vector_ids):
     return all_embeddings
 
 
+# def find_most_relevant_confessions(question, confessions, top_n=5):
+#     if not confessions:
+#         return []
+#     question_embedding = embeddings.embed_query(question)
+#     ids = [c['id'] for c in confessions]
+#     texts = [c['confession'] for c in confessions]
+#     vector_ids = [find_vector_id(list_id) for list_id in ids]
+#     vector_embeddings = fetch_with_retry(index, vector_ids=vector_ids)
+#     similarities = cosine_similarity([question_embedding], vector_embeddings)[0]
+#     most_relevant_indices = similarities.argsort()[-top_n:][::-1]
+#     most_relevant_confessions = [{'id': ids[i], 'confession': texts[i]} for i in most_relevant_indices]
+#     return most_relevant_confessions
+
+
 def find_most_relevant_confessions(question, confessions, top_n=5):
     if not confessions:
         return []
     question_embedding = embeddings.embed_query(question)
-    ids = [c['id'] for c in confessions]
-    texts = [c['confession'] for c in confessions]
-    vector_ids = [find_vector_id(list_id) for list_id in ids]
-    vector_embeddings = fetch_with_retry(index, vector_ids=vector_ids)
-    similarities = cosine_similarity([question_embedding], vector_embeddings)[0]
-    most_relevant_indices = similarities.argsort()[-top_n:][::-1]
-    most_relevant_confessions = [{'id': ids[i], 'confession': texts[i]} for i in most_relevant_indices]
+    result = index.query(vector=question_embedding, top_k=top_n, include_values=True)
+    most_relevant_confessions = []
+    for match in result['matches']:
+        confession_id = match['id']
+        confession = next((c['confession'] for c in confessions if c['id'] == confession_id), None)
+        if confession:
+            most_relevant_confessions.append({'id': confession_id, 'confession': confession})
     return most_relevant_confessions
 
 

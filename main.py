@@ -1,7 +1,7 @@
 import re
 import os
 import json
-from keybert import KeyBERT
+# from keybert import KeyBERT
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from langchain.prompts import PromptTemplate
@@ -23,7 +23,7 @@ USERNAME = "neo4j"
 PASSWORD = os.getenv('GRAPH_PW')
 
 # keybert model for topics from question
-key_bert_model = KeyBERT()
+# key_bert_model = KeyBERT()
 
 # pinecone set up
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
@@ -35,6 +35,23 @@ pcvectorstore = PineconeVectorStore.from_existing_index(index_name, embeddings)
 with open('output_vector_map.json', 'r') as file:
     vector_data = json.load(file)
     mapping = {item['confession_id']: item['vector_id'] for item in vector_data}
+
+stop_words = [
+    'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your',
+    'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she',
+    'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their',
+    'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that',
+    'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+    'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an',
+    'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of',
+    'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through',
+    'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down',
+    'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then',
+    'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any',
+    'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no',
+    'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
+    't', 'can', 'will', 'just', 'don', 'should', 'now'
+]
 
 
 def find_vector_id(confession_id):
@@ -61,9 +78,12 @@ def get_confession_by_id(tx, confession_id):
 
 
 def get_topics_from_question(question):
-    keywords = key_bert_model.extract_keywords(question, keyphrase_ngram_range=(1, 2), stop_words='english', top_n=6)
-    return [keyword[0].lower() for keyword in keywords]
+    # keywords = key_bert_model.extract_keywords(question, keyphrase_ngram_range=(1, 2), stop_words='english', top_n=6)
+    # return [keyword[0].lower() for keyword in keywords]
     # return question.split()
+    words = question.split()
+    important_words = [word.lower() for word in words if word.lower() not in stop_words]
+    return important_words
 
 
 def get_confessions_by_topics(tx, topics):

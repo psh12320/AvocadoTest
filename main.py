@@ -205,7 +205,7 @@ def process_question(question):
         Be sarcastic, irreverent, and push the boundaries of good taste.
         Ensure that your responses are very relevant to confessions in the context and answers the question USING ONLY THE MOST RELEVANT CONFESSION data. 
         Ensure your response is nearly 45 words.
-        Ensure your answer contains AT THE BARE MINIMUM one to two confession IDs that lead you to the answer in this format: #ABC1234.
+        Ensure your answer contains A MINIMUM OF ONE CONFESSION AND A MAXIMUM OF THREE confession IDs that lead you to the answer in this format: #ABC1234.
         If you get a question containing a confession ID, be nice. 
 
         Context: {context}

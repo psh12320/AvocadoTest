@@ -145,7 +145,7 @@ def process_question(question):
     topics = get_topics_from_question(question)
     with driver.session() as session:
         related_confessions = session.execute_read(get_confessions_by_topics, topics)
-        print("RELATED CONFESSIONS: ", related_confessions)
+        # print("RELATED CONFESSIONS: ", related_confessions)
     if related_confessions:
         relevant_confessions = find_most_relevant_confessions(question, related_confessions)
         for conf in relevant_confessions:
@@ -158,7 +158,7 @@ def process_question(question):
         context.append(f"Related Confession {conf.page_content} \n")
         # print(f"Related Confession: {conf.page_content} (Score: {score})\n")
     full_context = " ".join(context)
-    print(full_context)
+    # print(full_context)
     prompt = PromptTemplate(
         input_variables=["context", "query"],
         template=

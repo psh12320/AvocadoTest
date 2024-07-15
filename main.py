@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from langchain.prompts import PromptTemplate
 from langchain_pinecone import PineconeVectorStore
-from sklearn.metrics.pairwise import cosine_similarity
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from pinecone import Pinecone
 from pinecone.core.client.exceptions import PineconeApiException

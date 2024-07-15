@@ -1,0 +1,12 @@
+nvidia_cublas_cu12-*
+nvidia_cuda_cupti_cu12-*
+nvidia_cuda_nvrtc_cu12-*
+nvidia_cuda_runtime_cu12-*
+nvidia_cudnn_cu12-*
+nvidia_cufft_cu12-*
+nvidia_curand_cu12-*
+nvidia_cusolver_cu12-*
+nvidia_cusparse_cu12-*
+nvidia_nccl_cu12-*
+nvidia_nvtx_cu12-*
+nvidia_nvjitlink_cu12-*
